@@ -1,33 +1,30 @@
-# Scifigraph - Sci-Fi Economic Concepts Extractor
+# Rough-and-ready grounded theory coder
 
-A Python tool that reads text files containing science fiction book reviews or summaries and uses AI to extract relationships between books and the economic concepts they explore. The output is a clean, minimal JSON structure perfect for knowledge graph analysis. Built for Edgeryders and the Sci-Fi economics lab, for use primarily on our discussions of books and authors.
+A Python tool that reads text files containing interview transcripts and uses an LLM to simulate the work of an ethnographer doing ethnographic coding based on grounded theory. Transcripts are first divided into segments (there is an entire literature on how to do this, so we start by   The output is – provisionally – a list of codes and the in-vivo quotes the codes are attached to, plus some justification for the coding choice made by the LLM. 
 
-It essentially turns text into this: 
+## Main challenge
 
-<img width="1275" alt="Screenshot 2025-07-01 at 15 41 17" src="https://github.com/user-attachments/assets/7b8fea44-13b3-4c83-9e6f-e03e19731750" />
+Yudhanjaya: 
 
-The input is a folder containing book reviews, summaries, or academic papers about sci-fi novels (up to 7000-ish words, to be safe)
+> Grounded theory with LLMs is tricky because they are inherently biased towards categorization. For grounded theory, you need to prompt the model to act as a pure inductive coder, which means almost force-pushing it into negative space and then comparing outputs. I personally would use Gemini Pro (not flash) because its forced "thinking" process will come in handy.
+
+On the other hand, categorization is also useful to map the ethnographic data onto a concept space that intended readers understand easily – this is on e way to understand the "rough-and-ready" in this little project.
+
 
 
 ## Key Features
 
-- **Easy to use**: Stick files in an input folder, run, enjoy the JSON. It's easy.
-- **Fuzzy Matching**: Automatically deduplicates similar books and concepts
-- **Multiple Formats**: Supports both plain text and HTML input files
-- **Robust Processing**: Handles encoding issues and API errors with relative grace
-- **Fast Processing**: Uses Claude 3.5 Sonnet for efficient extraction
-- **Clean Output**: Simple JSON with just books and concepts - no unnecessary metadata
-- **Bidirectional Relationships**: Easy to query books by concepts or concepts by books
+* Works on simple text files. Some pre-processing might be needed but is not part of this repo.
+* Intended final output is a network of co-occurring codes or, in a good scenario, a [semantic social network](https://doi.org/10.1177/1525822X20908236). In successive iterations I intend to add some JSON structured output to build a graph from.
 
 ## Use Cases
 
-This is largely meant for researchers, academics, and sci-fi enthusiasts who want analyze economic themes in science fiction literature. Broadly:
+Rapid production of some insights from interviews or other contributions. For example: 
 
-- **Academic Research**: Analyze economic themes across sci-fi literature
-- **Content Discovery**: Find books that explore specific economic concepts
-- **Knowledge Graph Analysis**: Build networks of books and concepts ([example](https://github.com/yudhanjaya/scifigraph/tree/main/tulip_files/tulip_graphs))
-- **Data Visualization**: Create graphs showing relationships between literature and economics ([example](https://github.com/yudhanjaya/scifigraph/blob/main/tulip_files/tulip_graphs/the_graph.png))
-- **Research Projects**: Support studies on economics in speculative fiction
+1. Ask the same question for several informants, like "As a politician, how do you experience economic reform? What needs to be in place for you to attempt it yourself?"
+2. Use the software to map out the individual responses in terms of ethnographic codes, and look for patterns.
+
+Not suitable for academic publication, as speed is prioritized over rigor.
 
 ## Installation
 
@@ -53,179 +50,31 @@ Create an `Input/` folder and add your text files containing sci-fi book reviews
 
 ## Usage
 
-### Basic Usage
-```bash
-python graphgen.py
-```
-Depending on your Python setup, you might have to use instead
-
-```bash
-python3 graphgen.py
-```
-This will:
-- Process all files in the `Input/` folder
-- Generate `scifi_concepts_clean.json` with the extracted knowledge graph
-- Display progress and summary statistics
-
-### Custom Options
-```bash
-# Use a different input folder
-python3 graphgen.py --folder MyFiles
-
-# Specify custom output filename
-python3 graphgen.py --output my_concepts
-
-# Both options together
-python3 graphgen.py --folder MyFiles --output my_concepts
-```
+To do.
 
 ## Input Requirements
 
-### Supported File Types
-- **Plain text files** (`.txt`)
-- **HTML files** (`.html`, `.htm`)
-
-### Content Types
-- Book reviews from websites, blogs, or publications
-- Academic papers discussing sci-fi novels
-- Wikipedia summaries of science fiction books
-- Discussion posts about sci-fi literature and economics
-- Any text that mentions sci-fi books and economic concepts
-
-### File Specifications
-- **File size**: Up to 50KB each (larger files will be truncated)
-- **Encoding**: UTF-8 preferred, but the tool handles most common encodings
-- **Location**: All files must be in the specified input folder
+To do.
 
 ## Output Format
 
-The tool generates a clean JSON file with this structure:
-
-```json
-{
-  "books": [
-    {
-      "title": "Foundation",
-      "author": "Isaac Asimov",
-      "concepts": ["Psychohistory", "Economic Modeling", "Social Prediction"]
-    }
-  ],
-  "concepts": [
-    {
-      "name": "Psychohistory",
-      "books": ["Foundation", "Foundation and Empire"]
-    }
-  ]
-}
-```
+To do.
 
 ### Real Example Output
 
-Based on processing reviews of "Another Now" and "Market Forces":
-
-```json
-{
-  "books": [
-    {
-      "title": "Another Now",
-      "author": "Yanis Varoufakis",
-      "concepts": [
-        "Central Banking",
-        "Corporate Democracy",
-        "International Trade Balance",
-        "Labor Market Reform",
-        "Market Socialism",
-        "Universal Basic Dividend"
-      ]
-    },
-    {
-      "title": "Market Forces",
-      "author": "Richard Morgan",
-      "concepts": [
-        "Corporate Governance",
-        "Corporate Monopoly",
-        "Economic Exploitation",
-        "Economic Imperialism",
-        "Economic Inequality",
-        "Free Market Capitalism",
-        "Global Investment",
-        "Gross Domestic Product",
-        "Market Competition"
-      ]
-    }
-  ],
-  "concepts": [
-    {
-      "name": "Central Banking",
-      "books": ["Another Now"]
-    },
-    {
-      "name": "Corporate Democracy",
-      "books": ["Another Now"]
-    },
-    {
-      "name": "Free Market Capitalism",
-      "books": ["Market Forces"]
-    }
-  ]
-}
-```
-
-
+To do.
 
 ## File Structure
 
-```
-├── graphgen_simple.py          # Main extraction program
-├── README.md                   # This documentation
-├── api_key.txt                 # Your Anthropic API key (create this)
-├── Input/                      # Input folder (create this)
-│   ├── book_review1.txt
-│   ├── book_review2.html
-│   └── ...
-└── scifi_concepts_clean.json   # Generated output
-```
+To do.
+
 ## How It Works
 
-### Core Components
-
-#### FileProcessor
-- Discovers and reads input files
-- Handles multiple file formats and encodings
-- Extracts clean text from HTML files
-
-#### ClaudeExtractor
-- Interfaces with Anthropic's Claude API
-- Sends focused prompts for book and concept extraction
-- Handles API rate limiting and error recovery
-
-#### EntityNormalizer
-- Deduplicates similar books and concepts using fuzzy string matching
-- Creates bidirectional relationships between books and concepts
-- Maintains consistent naming across entities
-
-#### SciFiConceptExtractor
-- Orchestrates the entire processing pipeline
-- Aggregates results from all input files
-- Generates the final clean JSON output
+To do.
 
 ### Data Models
 
-```python
-# Book entity - represents a science fiction novel
-{
-    "title": str,           # Book title
-    "author": str,          # Author name
-    "concepts": [str]       # List of economic concepts
-}
-
-# Concept entity - represents an economic concept
-{
-    "name": str,           # Concept name
-    "books": [str]         # List of book titles
-}
-```
-
+To 
 ## Troubleshooting
 
 ### Common Issues
@@ -255,47 +104,6 @@ pip install anthropic beautifulsoup4 fuzzywuzzy python-levenshtein
 - Verify your Anthropic API key has sufficient credits
 - The tool automatically retries failed requests
 
-
-## Customization and Extension
-
-- **Larger files**: switch the model to a different version with a larger context window. 
-- **Large datasets**: For 500+ files, consider processing in smaller batches
-- **Content quality**: Higher quality input text produces better extractions
-
-Scifigraph can be easily modified to extract different types of concepts by editing the Claude prompts in `graphgen_simple.py`. For example:
-
-- **Political concepts** in sci-fi literature
-- **Technological themes** across different genres
-- **Social issues** in speculative fiction
-
-Scifigraph can be adapted to use other AI services by modifying the `ClaudeExtractor` class. It's not doing anything special enough that it can't be switched to something else - even a local LLM is easy to do.
-
-## Output Analysis
-
-### Using the JSON Output
-
-The generated JSON can be easily imported into:
-- **Graph databases** (Neo4j, Amazon Neptune)
-- **Visualization tools** (Gephi, Cytoscape, D3.js)
-- **Data analysis platforms** (Python pandas, R)
-- **Spreadsheet applications** (Excel, Google Sheets)
-
-### Example Analysis Queries
-
-With the JSON output, you can easily answer questions like:
-- Which books explore "Universal Basic Income"?
-- What economic concepts appear most frequently across sci-fi literature?
-- Which authors write most about economic themes?
-- How are different economic concepts connected through shared books?
-
-## Contributing
-
-This tool is designed to be simple and focused. When making modifications:
-
-1. Preserve the clean, minimal output format
-2. Maintain the bidirectional relationship structure
-3. Keep the codebase readable and well-documented
-4. Test with sample files to ensure quality extraction
 
 ## License
 
